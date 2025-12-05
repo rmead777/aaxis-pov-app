@@ -62,14 +62,14 @@ const TickMeter = ({ value }) => {
   );
 };
 
-// Custom Range Slider
+// Custom Range Slider - Enhanced for touch targets (min 44px height)
 const CustomSlider = ({ value, min, max, onChange, label, subLabel, formatValue }) => (
   <div className="flex flex-col w-full">
     <div className="flex justify-between items-end mb-2">
       <span className="text-slate-400 text-xs font-semibold uppercase tracking-wider">{label}</span>
       <span className="text-white font-bold text-lg">{formatValue ? formatValue(value) : value}</span>
     </div>
-    <div className="relative h-2 bg-slate-700 rounded-full">
+    <div className="relative h-6 md:h-2 bg-slate-700 rounded-full touch-manipulation">
       <div 
         className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full" 
         style={{ width: `${((value - min) / (max - min)) * 100}%` }}
@@ -80,14 +80,14 @@ const CustomSlider = ({ value, min, max, onChange, label, subLabel, formatValue 
         max={max} 
         value={value} 
         onChange={(e) => onChange(Number(e.target.value))}
-        className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+        className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer touch-manipulation min-h-[44px] -mt-2.5"
       />
       <div 
-        className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-lg pointer-events-none transform transition-transform"
+        className="absolute top-1/2 -translate-y-1/2 w-6 h-6 md:w-4 md:h-4 bg-white rounded-full shadow-lg pointer-events-none transform transition-transform"
         style={{ left: `${((value - min) / (max - min)) * 100}%`, transform: `translate(-50%, -50%)` }}
       />
     </div>
-    <div className="flex justify-between mt-1 text-[10px] text-slate-500 font-mono">
+    <div className="flex justify-between mt-2 md:mt-1 text-[10px] text-slate-500 font-mono">
       <span>{formatValue ? formatValue(min) : min}</span>
       <span>{subLabel}</span>
       <span>{formatValue ? formatValue(max) : max}</span>
@@ -217,15 +217,15 @@ export default function Home() {
     >
       
       {/* Navbar / Header */}
-      <header className="px-6 py-3 flex justify-between items-center border-b border-slate-800 bg-[#0B1120]/90 backdrop-blur sticky top-0 z-50">
-        <div>
-          <h2 className="text-amber-500 text-sm font-bold tracking-widest uppercase mb-1">Proof of Value (PoV)</h2>
-          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+      <header className="px-4 md:px-6 py-3 flex justify-between items-center border-b border-slate-800 bg-[#0B1120]/90 backdrop-blur sticky top-0 z-50">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-amber-500 text-xs md:text-sm font-bold tracking-widest uppercase mb-1">Proof of Value (PoV)</h2>
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight">
             No Risk. No Commitment. <span className="text-blue-500">Prove It First</span>
           </h1>
         </div>
-        <div className="hidden md:block">
-            <img src="/aaxis-logo.png" alt="AAXIS" className="h-16 w-auto object-contain" />
+        <div className="ml-2 md:ml-4 flex-shrink-0">
+            <img src="/aaxis-logo.png" alt="AAXIS" className="h-10 md:h-16 w-auto object-contain" />
         </div>
       </header>
 
@@ -239,11 +239,11 @@ export default function Home() {
           <Card className="p-4 md:p-5 overflow-hidden relative">
             
             {/* Top Controls Bar - Moved Inside Card */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end mb-4 pb-4 border-b border-slate-700/50">
-              <div className="md:col-span-3">
+            <div className="flex flex-col md:grid md:grid-cols-12 gap-4 md:gap-6 items-stretch md:items-end mb-4 pb-4 border-b border-slate-700/50">
+              <div className="w-full md:col-span-3">
                 <label className="block text-slate-400 text-xs font-bold uppercase mb-2">Choose Your Industry</label>
                 <div className="relative">
-                  <select className="w-full bg-slate-800 border border-slate-700 text-white py-2 px-4 rounded-lg appearance-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm">
+                  <select className="w-full bg-slate-800 border border-slate-700 text-white py-3 md:py-2 px-4 rounded-lg appearance-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm min-h-[44px]">
                     <option>Distribution</option>
                     <option>Manufacturing</option>
                     <option>Retail</option>
@@ -253,7 +253,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="md:col-span-5">
+              <div className="w-full md:col-span-5">
                 <CustomSlider 
                   label="Annual Revenue" 
                   value={revenue} 
@@ -265,7 +265,7 @@ export default function Home() {
                 />
               </div>
 
-              <div className="md:col-span-4">
+              <div className="w-full md:col-span-4">
                 <CustomSlider 
                   label="Operating Expenses" 
                   subLabel="(% of Revenue)"
@@ -278,8 +278,8 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Table Headers */}
-            <div className="grid grid-cols-12 gap-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 border-b border-slate-700/50 pb-2">
+            {/* Table Headers - Hidden on mobile, shown on larger screens */}
+            <div className="hidden md:grid grid-cols-12 gap-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 border-b border-slate-700/50 pb-2">
               <div className="col-span-3">Expense Areas</div>
               <div className="col-span-3 text-center">Current Allocation</div>
               <div className="col-span-2 text-center">
@@ -302,7 +302,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="space-y-2"> 
+            <div className="space-y-2 md:space-y-2"> 
               {expenseCategories.map((category, index) => {
                 const annualSpend = totalOpEx * category.baseAllocation;
                 const annualSpendLow = totalOpEx * category.range[0];
@@ -318,83 +318,165 @@ export default function Home() {
                   <div 
                     key={category.id}
                     onClick={() => setActiveRow(index)}
-                    className={`grid grid-cols-12 gap-4 items-center py-1 px-2 rounded-lg cursor-pointer transition-all duration-200 group
-                      ${isActive ? 'bg-blue-500/10 border border-blue-500/30' : 'hover:bg-slate-800/50 border border-transparent'}
-                    `}
+                    className={`cursor-pointer transition-all duration-200 group min-h-[44px] rounded-lg ${isActive ? 'bg-blue-500/10 border border-blue-500/30' : 'hover:bg-slate-800/50 border border-transparent'}`}
                   >
-                    {/* Name - Now enforced single line */}
-                    <div className="col-span-3 flex items-center gap-2 overflow-hidden">
-                      <span className={`text-sm font-medium leading-tight whitespace-nowrap overflow-hidden text-ellipsis ${isActive ? 'text-white' : 'text-slate-300'}`}>
-                        {category.name}
-                      </span>
-                      <Info className="w-3 h-3 text-slate-600 hover:text-blue-400 transition-colors shrink-0" />
-                    </div>
-
-                    {/* Allocation Visual - FLOATING BAND STYLE */}
-                    <div className="col-span-3 px-4 flex items-center h-full">
-                        <div className="relative w-full h-8 flex items-center">
-                            {/* Thin Background Line (Axis) */}
-                            <div className="absolute w-full h-[1px] bg-slate-700/50 top-1/2 -translate-y-1/2"></div>
-                            
-                            {/* The Range Band (Floating Bar) */}
-                            <div 
-                                className={`absolute h-2 rounded-full top-1/2 -translate-y-1/2 transition-colors duration-300
-                                  ${isActive ? 'bg-blue-400' : 'bg-slate-600'}
-                                `}
-                                style={{ 
-                                    left: `${(category.range[0] / MAX_SCALE) * 100}%`, 
-                                    width: `${((category.range[1] - category.range[0]) / MAX_SCALE) * 100}%` 
-                                }}
-                            >
-                                {/* Min Label */}
-                                <span className={`absolute -top-4 left-0 -translate-x-1/4 text-[9px] font-mono ${isActive ? 'text-blue-300' : 'text-slate-500'}`}>
-                                    {(category.range[0] * 100).toFixed(1)}%
-                                </span>
-                                {/* Max Label */}
-                                <span className={`absolute -top-4 right-0 translate-x-1/4 text-[9px] font-mono ${isActive ? 'text-blue-300' : 'text-slate-500'}`}>
-                                    {(category.range[1] * 100).toFixed(1)}%
-                                </span>
-                            </div>
-
-                            {/* Current Value Marker (Dot) */}
-                            <div 
-                                className="absolute w-2 h-2 bg-white rounded-full shadow border border-slate-900 top-1/2 -translate-y-1/2 z-10"
-                                style={{ left: `${(category.baseAllocation / MAX_SCALE) * 100}%`, transform: 'translate(-50%, -50%)' }}
-                            />
+                    {/* Mobile Card Layout */}
+                    <div className="block md:hidden p-3">
+                      {/* Category Name */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className={`text-sm font-medium leading-tight ${isActive ? 'text-white' : 'text-slate-300'}`}>
+                          {category.name}
+                        </span>
+                        <Info className="w-4 h-4 text-slate-600 hover:text-blue-400 transition-colors shrink-0" />
+                      </div>
+                      
+                      {/* Allocation Visual - Mobile optimized */}
+                      <div className="mb-3">
+                        <div className="text-xs text-slate-500 uppercase mb-1">Allocation</div>
+                        <div className="relative w-full h-6 flex items-center">
+                          <div className="absolute w-full h-[1px] bg-slate-700/50 top-1/2 -translate-y-1/2"></div>
+                          <div 
+                            className={`absolute h-3 rounded-full top-1/2 -translate-y-1/2 transition-colors duration-300
+                              ${isActive ? 'bg-blue-400' : 'bg-slate-600'}
+                            `}
+                            style={{ 
+                              left: `${(category.range[0] / MAX_SCALE) * 100}%`, 
+                              width: `${((category.range[1] - category.range[0]) / MAX_SCALE) * 100}%` 
+                            }}
+                          >
+                            <span className={`absolute -bottom-4 left-0 text-[10px] font-mono ${isActive ? 'text-blue-300' : 'text-slate-500'}`}>
+                              {(category.range[0] * 100).toFixed(1)}%
+                            </span>
+                            <span className={`absolute -bottom-4 right-0 text-[10px] font-mono ${isActive ? 'text-blue-300' : 'text-slate-500'}`}>
+                              {(category.range[1] * 100).toFixed(1)}%
+                            </span>
+                          </div>
+                          <div 
+                            className="absolute w-2.5 h-2.5 bg-white rounded-full shadow border border-slate-900 top-1/2 -translate-y-1/2 z-10"
+                            style={{ left: `${(category.baseAllocation / MAX_SCALE) * 100}%`, transform: 'translate(-50%, -50%)' }}
+                          />
                         </div>
+                      </div>
+                      
+                      {/* Mobile grid for values */}
+                      <div className="grid grid-cols-2 gap-3 mt-5 pt-2 border-t border-slate-700/30">
+                        <div>
+                          <div className="text-xs text-slate-500 uppercase mb-1">Annual Spend</div>
+                          <div className="flex justify-between text-sm font-mono text-slate-300">
+                            <Money value={annualSpendLow} compact />
+                            <span className="text-slate-600 mx-1">-</span>
+                            <Money value={annualSpendHigh} compact />
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-slate-500 uppercase mb-1">Efficiency</div>
+                          <div className="text-amber-500 font-bold text-sm">
+                            {(category.efficiencyGain * 100).toFixed(0)}%
+                          </div>
+                        </div>
+                        <div className="col-span-2">
+                          <div className="text-xs text-slate-500 uppercase mb-1">Annual Savings</div>
+                          <div className="flex items-center gap-2 text-sm font-mono">
+                            <span className="text-slate-300"><Money value={savingsLow} compact /></span>
+                            <span className="text-slate-600">-</span>
+                            <span className={`${isActive ? 'text-amber-400 font-bold' : 'text-slate-300'}`}><Money value={savingsHigh} compact /></span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Annual Spend (Low / High) */}
-                    <div className="col-span-2 flex justify-between text-sm font-mono text-slate-300 px-2">
-                      <Money value={annualSpendLow} compact />
-                      <Money value={annualSpendHigh} compact />
-                    </div>
+                    {/* Desktop Row Layout */}
+                    <div className="hidden md:grid grid-cols-12 gap-4 items-center py-1 px-2">
+                      {/* Name - Now enforced single line */}
+                      <div className="col-span-3 flex items-center gap-2 overflow-hidden">
+                        <span className={`text-sm font-medium leading-tight whitespace-nowrap overflow-hidden text-ellipsis ${isActive ? 'text-white' : 'text-slate-300'}`}>
+                          {category.name}
+                        </span>
+                        <Info className="w-3 h-3 text-slate-600 hover:text-blue-400 transition-colors shrink-0" />
+                      </div>
 
-                    {/* Efficiency Gain - NEW TICK METER */}
-                    <div className="col-span-2 flex items-center justify-center">
-                        <TickMeter value={category.efficiencyGain} />
-                    </div>
+                      {/* Allocation Visual - FLOATING BAND STYLE */}
+                      <div className="col-span-3 px-4 flex items-center h-full">
+                          <div className="relative w-full h-8 flex items-center">
+                              {/* Thin Background Line (Axis) */}
+                              <div className="absolute w-full h-[1px] bg-slate-700/50 top-1/2 -translate-y-1/2"></div>
+                              
+                              {/* The Range Band (Floating Bar) */}
+                              <div 
+                                  className={`absolute h-2 rounded-full top-1/2 -translate-y-1/2 transition-colors duration-300
+                                    ${isActive ? 'bg-blue-400' : 'bg-slate-600'}
+                                  `}
+                                  style={{ 
+                                      left: `${(category.range[0] / MAX_SCALE) * 100}%`, 
+                                      width: `${((category.range[1] - category.range[0]) / MAX_SCALE) * 100}%` 
+                                  }}
+                              >
+                                  {/* Min Label */}
+                                  <span className={`absolute -top-4 left-0 -translate-x-1/4 text-[9px] font-mono ${isActive ? 'text-blue-300' : 'text-slate-500'}`}>
+                                      {(category.range[0] * 100).toFixed(1)}%
+                                  </span>
+                                  {/* Max Label */}
+                                  <span className={`absolute -top-4 right-0 translate-x-1/4 text-[9px] font-mono ${isActive ? 'text-blue-300' : 'text-slate-500'}`}>
+                                      {(category.range[1] * 100).toFixed(1)}%
+                                  </span>
+                              </div>
 
-                    {/* Annual Savings (Low / High) */}
-                    <div className="col-span-2 flex justify-between text-sm font-mono px-2">
-                       <span className="text-slate-300"><Money value={savingsLow} compact /></span>
-                       <span className={`${isActive ? 'text-amber-400 font-bold' : 'text-slate-300'}`}><Money value={savingsHigh} compact /></span>
+                              {/* Current Value Marker (Dot) */}
+                              <div 
+                                  className="absolute w-2 h-2 bg-white rounded-full shadow border border-slate-900 top-1/2 -translate-y-1/2 z-10"
+                                  style={{ left: `${(category.baseAllocation / MAX_SCALE) * 100}%`, transform: 'translate(-50%, -50%)' }}
+                              />
+                          </div>
+                      </div>
+
+                      {/* Annual Spend (Low / High) */}
+                      <div className="col-span-2 flex justify-between text-sm font-mono text-slate-300 px-2">
+                        <Money value={annualSpendLow} compact />
+                        <Money value={annualSpendHigh} compact />
+                      </div>
+
+                      {/* Efficiency Gain - NEW TICK METER */}
+                      <div className="col-span-2 flex items-center justify-center">
+                          <TickMeter value={category.efficiencyGain} />
+                      </div>
+
+                      {/* Annual Savings (Low / High) */}
+                      <div className="col-span-2 flex justify-between text-sm font-mono px-2">
+                         <span className="text-slate-300"><Money value={savingsLow} compact /></span>
+                         <span className={`${isActive ? 'text-amber-400 font-bold' : 'text-slate-300'}`}><Money value={savingsHigh} compact /></span>
+                      </div>
                     </div>
                   </div>
                 );
               })}
 
               {/* Total Row */}
-              <div className="grid grid-cols-12 gap-4 items-center py-4 mt-2 border-t border-slate-700">
-                 <div className="col-span-10 text-right font-bold text-slate-400 uppercase tracking-widest text-xs">Total Estimated Impact</div>
-                 <div className="col-span-2 flex justify-between items-baseline px-2">
-                     <div className="text-sm font-mono text-slate-400">
-                         <Money value={totals.savingsLow} compact />
-                     </div>
-                     <div className="text-xl font-black text-amber-400 font-mono drop-shadow-[0_0_5px_rgba(251,191,36,0.3)]">
-                         <Money value={totals.savingsHigh} compact highlight />
-                     </div>
-                 </div>
+              <div className="py-4 mt-2 border-t border-slate-700">
+                {/* Mobile Total */}
+                <div className="block md:hidden">
+                  <div className="text-center font-bold text-slate-400 uppercase tracking-widest text-xs mb-2">Total Estimated Impact</div>
+                  <div className="flex justify-center items-center gap-4">
+                    <div className="text-sm font-mono text-slate-400">
+                      <Money value={totals.savingsLow} compact />
+                    </div>
+                    <span className="text-slate-600">-</span>
+                    <div className="text-xl font-black text-amber-400 font-mono drop-shadow-[0_0_5px_rgba(251,191,36,0.3)]">
+                      <Money value={totals.savingsHigh} compact highlight />
+                    </div>
+                  </div>
+                </div>
+                {/* Desktop Total */}
+                <div className="hidden md:grid grid-cols-12 gap-4 items-center">
+                  <div className="col-span-10 text-right font-bold text-slate-400 uppercase tracking-widest text-xs">Total Estimated Impact</div>
+                  <div className="col-span-2 flex justify-between items-baseline px-2">
+                      <div className="text-sm font-mono text-slate-400">
+                          <Money value={totals.savingsLow} compact />
+                      </div>
+                      <div className="text-xl font-black text-amber-400 font-mono drop-shadow-[0_0_5px_rgba(251,191,36,0.3)]">
+                          <Money value={totals.savingsHigh} compact highlight />
+                      </div>
+                  </div>
+                </div>
               </div>
             </div>
           </Card>
@@ -406,14 +488,14 @@ export default function Home() {
           <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-3 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
             
-            <h3 className="text-base text-slate-200 mb-2 flex items-center justify-center gap-2">
-              Problems solved to achieve <span className="text-amber-400 font-bold text-lg">15%</span> improvement in 
-              <span className="text-white font-bold truncate">{expenseCategories[activeRow].name}</span>
+            <h3 className="text-sm md:text-base text-slate-200 mb-2 flex flex-wrap items-center justify-center gap-1 md:gap-2">
+              <span>Problems solved to achieve</span> <span className="text-amber-400 font-bold text-lg">15%</span> <span>improvement in</span>
+              <span className="text-white font-bold">{expenseCategories[activeRow].name}</span>
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-1 gap-x-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-4 md:gap-x-8">
               {(problemsMap[activeRow] || problemsMap['default']).map((problem, idx) => (
-                <div key={idx} className="flex items-start gap-2 group cursor-default">
+                <div key={idx} className="flex items-start gap-2 group cursor-default min-h-[44px] py-2 md:py-0">
                   <span className="text-slate-600 font-mono text-[10px] mt-1 group-hover:text-blue-500 transition-colors">
                     0{idx + 1}.
                   </span>
@@ -426,23 +508,23 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="mt-1 pt-1 border-t border-slate-800 flex justify-end">
-                <button className="text-[10px] text-amber-500 hover:text-amber-400 flex items-center gap-1 uppercase tracking-wider font-bold">
-                    Learn How <ArrowRight className="w-3 h-3" />
+            <div className="mt-2 pt-2 border-t border-slate-800 flex justify-end">
+                <button className="text-xs md:text-[10px] text-amber-500 hover:text-amber-400 flex items-center gap-1 uppercase tracking-wider font-bold min-h-[44px] px-2">
+                    Learn How <ArrowRight className="w-4 h-4 md:w-3 md:h-3" />
                 </button>
             </div>
           </div>
 
         </div>
 
-        {/* RIGHT COLUMN: Sidebar Steps */}
-        <div className="lg:col-span-2 space-y-8 pl-4 border-l border-slate-800/50">
+        {/* RIGHT COLUMN: Sidebar Steps - Stacks below on mobile */}
+        <div className="lg:col-span-2 space-y-6 lg:space-y-8 pt-4 lg:pt-0 lg:pl-4 border-t lg:border-t-0 lg:border-l border-slate-800/50 mt-4 lg:mt-0">
           
           {/* Step 1 */}
           <div className="relative group">
-            <div className="flex items-baseline gap-4 mb-3">
-              <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-400 to-blue-900 stroke-text opacity-90 font-outline-2 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">01</span>
-              <h3 className="text-xl font-bold text-white tracking-wide">DISCOVERY</h3>
+            <div className="flex items-baseline gap-3 md:gap-4 mb-3">
+              <span className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-400 to-blue-900 stroke-text opacity-90 font-outline-2 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">01</span>
+              <h3 className="text-lg md:text-xl font-bold text-white tracking-wide">DISCOVERY</h3>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed pl-2 border-l-2 border-blue-500/30 ml-4 group-hover:border-blue-500 transition-colors">
               Identify most impactful business problem to solve. We analyze your specific data landscape.
@@ -451,9 +533,9 @@ export default function Home() {
 
           {/* Step 2 */}
           <div className="relative group">
-            <div className="flex items-baseline gap-4 mb-3">
-              <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-500 to-blue-900 opacity-90 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">02</span>
-              <h3 className="text-xl font-bold text-white tracking-wide">DELIVERY</h3>
+            <div className="flex items-baseline gap-3 md:gap-4 mb-3">
+              <span className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-500 to-blue-900 opacity-90 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">02</span>
+              <h3 className="text-lg md:text-xl font-bold text-white tracking-wide">DELIVERY</h3>
             </div>
             <ul className="space-y-3 pl-6">
               <li className="text-slate-400 text-sm flex items-start gap-3">
@@ -469,17 +551,17 @@ export default function Home() {
 
            {/* Step 3 */}
            <div className="relative group">
-            <div className="flex items-baseline gap-4 mb-3">
-              <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-500 to-blue-900 opacity-90 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">03</span>
-              <h3 className="text-xl font-bold text-white tracking-wide">REVIEW & CONFIRM</h3>
+            <div className="flex items-baseline gap-3 md:gap-4 mb-3">
+              <span className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-500 to-blue-900 opacity-90 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">03</span>
+              <h3 className="text-lg md:text-xl font-bold text-white tracking-wide">REVIEW & CONFIRM</h3>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed pl-2 border-l-2 border-blue-500/30 ml-4 group-hover:border-blue-500 transition-colors">
               Validate results against the success criteria defined in discovery.
             </p>
           </div>
           
-          <div className="pt-8">
-              <button className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold rounded-lg shadow-lg shadow-blue-900/50 transition-all transform active:scale-95">
+          <div className="pt-4 lg:pt-8">
+              <button className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold rounded-lg shadow-lg shadow-blue-900/50 transition-all transform active:scale-95 min-h-[48px]">
                   Start Your PoV
               </button>
           </div>
