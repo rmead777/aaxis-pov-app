@@ -353,7 +353,7 @@ export default function Home() {
           </Card>
 
           {/* Drill-Down Info Section */}
-          <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-5 relative overflow-hidden">
+          <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-4 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
             
             <h3 className="text-lg text-slate-200 mb-3">
@@ -379,7 +379,7 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="mt-8 pt-4 border-t border-slate-800 flex justify-end">
+            <div className="mt-2 pt-2 border-t border-slate-800 flex justify-end">
                 <button className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 uppercase tracking-wider font-bold">
                     Learn How <ArrowRight className="w-3 h-3" />
                 </button>
