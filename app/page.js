@@ -98,10 +98,57 @@ const CustomSlider = ({ value, min, max, onChange, label, subLabel, formatValue 
 // --- Main Application ---
 
 export default function Home() {
+  // Auth State
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+
   // Global State
   const [revenue, setRevenue] = useState(5200000000); // 5.2B
   const [opExPercent, setOpExPercent] = useState(20); // 20%
   const [activeRow, setActiveRow] = useState(0);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (password === 'AAXIS2.0') {
+      setIsAuthenticated(true);
+      setError(false);
+    } else {
+      setError(true);
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#030712] text-slate-300 font-sans">
+        <div className="w-full max-w-md p-8 bg-slate-900/50 border border-slate-800 rounded-2xl backdrop-blur-xl shadow-2xl">
+            <div className="flex justify-center mb-6">
+                 <img src="/aaxis-logo.png" alt="AAXIS" className="h-12 w-auto object-contain opacity-80" />
+            </div>
+            <h2 className="text-center text-xl font-bold text-white mb-6 tracking-tight">Protected Access</h2>
+            <form onSubmit={handleLogin} className="space-y-4">
+                <div>
+                    <input 
+                        type="password" 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter Password"
+                        className="w-full bg-slate-950/50 border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg px-4 py-3 text-white placeholder-slate-600 outline-none transition-all"
+                        autoFocus
+                    />
+                </div>
+                {error && <p className="text-red-400 text-xs text-center">Incorrect password</p>}
+                <button 
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-900/20 transition-all transform active:scale-95"
+                >
+                    Enter
+                </button>
+            </form>
+        </div>
+      </div>
+    );
+  }
 
   // Data Definition
   const expenseCategories = [
