@@ -30,29 +30,29 @@ const Money = ({ value, compact = false, highlight = false }) => {
 
 // Tick-Style Meter for Efficiency
 const TickMeter = ({ value }) => {
-  // Generate 20 ticks to represent the scale (e.g., 0-30%)
-  const ticks = Array.from({ length: 20 });
+  // Generate 24 ticks for a denser look
+  const ticks = Array.from({ length: 24 });
   // Calculate which tick should be active based on value (assuming max visual range of ~30%)
-  const activeIndex = Math.min(Math.floor((value / 0.30) * 20), 19);
+  const activeIndex = Math.min(Math.floor((value / 0.30) * 24), 23);
 
   return (
     <div className="flex flex-col items-center w-full max-w-[120px] mx-auto">
       <span className="text-[10px] font-bold text-amber-500 font-mono mb-0.5">
         {(value * 100).toFixed(0)}%
       </span>
-      <div className="flex items-end justify-between w-full h-2.5 gap-[2px]">
+      <div className="flex items-end justify-between w-full h-3 gap-[1px]">
         {ticks.map((_, i) => {
           // Highlight logic
           const isHighlight = i === activeIndex;
-          const isMajor = i % 5 === 0; // Every 5th tick is taller
+          const isMajor = i % 6 === 0; // Every 6th tick is taller
           
           return (
             <div 
               key={i}
-              className={`w-[1px] rounded-full transition-all duration-300
-                ${isHighlight ? 'bg-amber-400 h-full shadow-[0_0_8px_rgba(251,191,36,0.8)] w-[1.5px]' : 'bg-slate-700'}
-                ${!isHighlight && isMajor ? 'h-2' : ''}
-                ${!isHighlight && !isMajor ? 'h-1' : ''}
+              className={`w-[1.5px] rounded-full transition-all duration-300
+                ${isHighlight ? 'bg-amber-400 h-full shadow-[0_0_8px_rgba(251,191,36,1)] w-[2px]' : 'bg-slate-700'}
+                ${!isHighlight && isMajor ? 'h-2 bg-slate-600' : ''}
+                ${!isHighlight && !isMajor ? 'h-1 bg-slate-800' : ''}
               `}
             />
           );
@@ -340,11 +340,11 @@ export default function Home() {
               {/* Total Row */}
               <div className="grid grid-cols-12 gap-4 items-center py-4 mt-2 border-t border-slate-700">
                  <div className="col-span-10 text-right font-bold text-slate-400 uppercase tracking-widest text-xs">Total Estimated Impact</div>
-                 <div className="col-span-2 flex justify-between px-2">
+                 <div className="col-span-2 flex justify-between items-baseline px-2">
                      <div className="text-sm font-mono text-slate-400">
                          <Money value={totals.savingsLow} compact />
                      </div>
-                     <div className="text-sm font-bold text-amber-400 font-mono">
+                     <div className="text-xl font-black text-amber-400 font-mono drop-shadow-[0_0_5px_rgba(251,191,36,0.3)]">
                          <Money value={totals.savingsHigh} compact />
                      </div>
                  </div>
@@ -352,35 +352,35 @@ export default function Home() {
             </div>
           </Card>
 
+          {/* Separator Line */}
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent my-2 opacity-50"></div>
+
           {/* Drill-Down Info Section */}
-          <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-4 relative overflow-hidden">
+          <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-3 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
             
-            <h3 className="text-lg text-slate-200 mb-3">
-              Problems solved to achieve <span className="text-amber-400 font-bold">15%</span> improvement in 
-              <span className="text-white font-bold ml-2">{expenseCategories[activeRow].name}</span>
+            <h3 className="text-base text-slate-200 mb-2 flex items-center gap-2">
+              Problems solved to achieve <span className="text-amber-400 font-bold text-lg">15%</span> improvement in 
+              <span className="text-white font-bold truncate">{expenseCategories[activeRow].name}</span>
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-2 gap-x-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-1 gap-x-8">
               {(problemsMap[activeRow] || problemsMap['default']).map((problem, idx) => (
-                <div key={idx} className="flex items-start gap-3 group cursor-default">
-                  <span className="text-slate-600 font-mono text-sm mt-0.5 group-hover:text-blue-500 transition-colors">
+                <div key={idx} className="flex items-start gap-2 group cursor-default">
+                  <span className="text-slate-600 font-mono text-[10px] mt-1 group-hover:text-blue-500 transition-colors">
                     0{idx + 1}.
                   </span>
                   <div className="flex flex-col">
-                    <span className="text-slate-400 text-sm group-hover:text-slate-200 transition-colors border-b border-transparent group-hover:border-slate-600 pb-0.5">
+                    <span className="text-slate-400 text-xs group-hover:text-slate-200 transition-colors border-b border-transparent group-hover:border-slate-600 pb-0.5 leading-tight">
                       {problem}
-                    </span>
-                    <span className="text-[10px] text-slate-600 mt-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-blue-400">
-                      [Learn How | See Demo]
                     </span>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-2 pt-2 border-t border-slate-800 flex justify-end">
-                <button className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 uppercase tracking-wider font-bold">
+            <div className="mt-1 pt-1 border-t border-slate-800 flex justify-end">
+                <button className="text-[10px] text-blue-400 hover:text-blue-300 flex items-center gap-1 uppercase tracking-wider font-bold">
                     Learn How <ArrowRight className="w-3 h-3" />
                 </button>
             </div>
