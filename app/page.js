@@ -359,7 +359,7 @@ export default function Home() {
           <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-3 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
             
-            <h3 className="text-base text-slate-200 mb-2 flex items-center gap-2">
+            <h3 className="text-base text-slate-200 mb-2 flex items-center justify-center gap-2">
               Problems solved to achieve <span className="text-amber-400 font-bold text-lg">15%</span> improvement in 
               <span className="text-white font-bold truncate">{expenseCategories[activeRow].name}</span>
             </h3>
