@@ -37,10 +37,10 @@ const TickMeter = ({ value }) => {
 
   return (
     <div className="flex flex-col items-center w-full max-w-[120px] mx-auto">
-      <span className="text-xs font-bold text-amber-500 font-mono mb-1">
+      <span className="text-[10px] font-bold text-amber-500 font-mono mb-0.5">
         {(value * 100).toFixed(0)}%
       </span>
-      <div className="flex items-end justify-between w-full h-4 gap-[2px]">
+      <div className="flex items-end justify-between w-full h-2.5 gap-[2px]">
         {ticks.map((_, i) => {
           // Highlight logic
           const isHighlight = i === activeIndex;
@@ -50,9 +50,9 @@ const TickMeter = ({ value }) => {
             <div 
               key={i}
               className={`w-[1px] rounded-full transition-all duration-300
-                ${isHighlight ? 'bg-amber-400 h-full shadow-[0_0_8px_rgba(251,191,36,0.8)] w-[2px]' : 'bg-slate-700'}
-                ${!isHighlight && isMajor ? 'h-3' : ''}
-                ${!isHighlight && !isMajor ? 'h-1.5' : ''}
+                ${isHighlight ? 'bg-amber-400 h-full shadow-[0_0_8px_rgba(251,191,36,0.8)] w-[1.5px]' : 'bg-slate-700'}
+                ${!isHighlight && isMajor ? 'h-2' : ''}
+                ${!isHighlight && !isMajor ? 'h-1' : ''}
               `}
             />
           );
@@ -161,10 +161,13 @@ export default function Home() {
   }, { savings: 0, savingsLow: 0, savingsHigh: 0 });
 
   // VISUAL SCALE SETTINGS
-  const MAX_SCALE = 0.35; 
+  const MAX_SCALE = 0.45; 
 
   return (
-    <div className="min-h-screen bg-[#0B1120] text-slate-300 font-sans selection:bg-blue-500/30 overflow-x-hidden">
+    <div 
+      className="min-h-screen text-slate-300 font-sans selection:bg-blue-500/30 overflow-x-hidden"
+      style={{ background: 'radial-gradient(ellipse at 50% 30%, #1a2a3a 0%, #0a0f14 70%)' }}
+    >
       
       {/* Navbar / Header */}
       <header className="px-8 py-6 flex justify-between items-center border-b border-slate-800 bg-[#0B1120]/90 backdrop-blur sticky top-0 z-50">
@@ -268,7 +271,7 @@ export default function Home() {
                   <div 
                     key={category.id}
                     onClick={() => setActiveRow(index)}
-                    className={`grid grid-cols-12 gap-4 items-center py-2 px-2 rounded-lg cursor-pointer transition-all duration-200 group
+                    className={`grid grid-cols-12 gap-4 items-center py-1 px-2 rounded-lg cursor-pointer transition-all duration-200 group
                       ${isActive ? 'bg-blue-500/10 border border-blue-500/30' : 'hover:bg-slate-800/50 border border-transparent'}
                     `}
                   >
