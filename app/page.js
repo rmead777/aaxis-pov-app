@@ -170,7 +170,7 @@ export default function Home() {
     >
       
       {/* Navbar / Header */}
-      <header className="px-8 py-6 flex justify-between items-center border-b border-slate-800 bg-[#0B1120]/90 backdrop-blur sticky top-0 z-50">
+      <header className="px-6 py-3 flex justify-between items-center border-b border-slate-800 bg-[#0B1120]/90 backdrop-blur sticky top-0 z-50">
         <div>
           <h2 className="text-amber-500 text-sm font-bold tracking-widest uppercase mb-1">Proof of Value (PoV)</h2>
           <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
@@ -178,21 +178,21 @@ export default function Home() {
           </h1>
         </div>
         <div className="hidden md:block">
-            <img src="/aaxis-logo.png" alt="AAXIS" className="h-10 w-auto object-contain" />
+            <img src="/aaxis-logo.png" alt="AAXIS" className="h-16 w-auto object-contain" />
         </div>
       </header>
 
       {/* Main Container - WIDENED to 95% width to prevent text wrapping */}
-      <main className="p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 w-[98%] max-w-[2000px] mx-auto">
+      <main className="p-2 md:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 w-[98%] max-w-[2000px] mx-auto">
         
         {/* LEFT COLUMN: Controls & Data Dashboard */}
-        <div className="lg:col-span-10 space-y-6">
+        <div className="lg:col-span-10 space-y-3">
           
           {/* Main Data Table Card */}
-          <Card className="p-6 md:p-8 overflow-hidden relative">
+          <Card className="p-4 md:p-5 overflow-hidden relative">
             
             {/* Top Controls Bar - Moved Inside Card */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end mb-8 pb-6 border-b border-slate-700/50">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end mb-4 pb-4 border-b border-slate-700/50">
               <div className="md:col-span-3">
                 <label className="block text-slate-400 text-xs font-bold uppercase mb-2">Choose Your Industry</label>
                 <div className="relative">
@@ -232,7 +232,7 @@ export default function Home() {
             </div>
 
             {/* Table Headers */}
-            <div className="grid grid-cols-12 gap-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-700/50 pb-4">
+            <div className="grid grid-cols-12 gap-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 border-b border-slate-700/50 pb-2">
               <div className="col-span-3">Expense Areas</div>
               <div className="col-span-3 text-center">Current Allocation</div>
               <div className="col-span-2 text-center">
@@ -353,15 +353,15 @@ export default function Home() {
           </Card>
 
           {/* Drill-Down Info Section */}
-          <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-8 relative overflow-hidden">
+          <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
             
-            <h3 className="text-lg text-slate-200 mb-6">
+            <h3 className="text-lg text-slate-200 mb-3">
               Problems solved to achieve <span className="text-amber-400 font-bold">15%</span> improvement in 
               <span className="text-white font-bold ml-2">{expenseCategories[activeRow].name}</span>
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-2 gap-x-8">
               {(problemsMap[activeRow] || problemsMap['default']).map((problem, idx) => (
                 <div key={idx} className="flex items-start gap-3 group cursor-default">
                   <span className="text-slate-600 font-mono text-sm mt-0.5 group-hover:text-blue-500 transition-colors">
@@ -389,7 +389,7 @@ export default function Home() {
         </div>
 
         {/* RIGHT COLUMN: Sidebar Steps */}
-        <div className="lg:col-span-2 space-y-12 pl-4 border-l border-slate-800/50">
+        <div className="lg:col-span-2 space-y-8 pl-4 border-l border-slate-800/50">
           
           {/* Step 1 */}
           <div className="relative group">
