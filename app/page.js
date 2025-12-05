@@ -142,10 +142,23 @@ export default function Home() {
 
   // Calculation Logic
   const totalOpEx = revenue * (opExPercent / 100);
-  const totalSavings = expenseCategories.reduce((acc, cat) => {
+  
+  // Calculate totals including ranges
+  const totals = expenseCategories.reduce((acc, cat) => {
     const spend = totalOpEx * cat.baseAllocation;
-    return acc + (spend * cat.efficiencyGain);
-  }, 0);
+    const spendLow = totalOpEx * cat.range[0];
+    const spendHigh = totalOpEx * cat.range[1];
+    
+    const savings = spend * cat.efficiencyGain;
+    const savingsLow = spendLow * cat.efficiencyGain;
+    const savingsHigh = spendHigh * cat.efficiencyGain;
+
+    return {
+      savings: acc.savings + savings,
+      savingsLow: acc.savingsLow + savingsLow,
+      savingsHigh: acc.savingsHigh + savingsHigh
+    };
+  }, { savings: 0, savingsLow: 0, savingsHigh: 0 });
 
   // VISUAL SCALE SETTINGS
   const MAX_SCALE = 0.35; 
@@ -162,10 +175,7 @@ export default function Home() {
           </h1>
         </div>
         <div className="hidden md:block">
-            <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-white text-[#0B1120] font-bold flex items-center justify-center rounded">A</div>
-                <span className="font-bold text-xl tracking-widest text-white">AAXIS</span>
-            </div>
+            <img src="/aaxis-logo.png" alt="AAXIS" className="h-10 w-auto object-contain" />
         </div>
       </header>
 
@@ -175,60 +185,83 @@ export default function Home() {
         {/* LEFT COLUMN: Controls & Data Dashboard */}
         <div className="lg:col-span-10 space-y-6">
           
-          {/* Top Controls Bar */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end bg-slate-900/50 p-6 rounded-2xl border border-slate-800">
-            <div className="md:col-span-3">
-              <label className="block text-slate-400 text-xs font-bold uppercase mb-2">Choose Your Industry</label>
-              <div className="relative">
-                <select className="w-full bg-slate-800 border border-slate-700 text-white py-3 px-4 rounded-lg appearance-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                  <option>Distribution</option>
-                  <option>Manufacturing</option>
-                  <option>Retail</option>
-                  <option>Logistics</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+          {/* Main Data Table Card */}
+          <Card className="p-6 md:p-8 overflow-hidden relative">
+            
+            {/* Top Controls Bar - Moved Inside Card */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end mb-8 pb-6 border-b border-slate-700/50">
+              <div className="md:col-span-3">
+                <label className="block text-slate-400 text-xs font-bold uppercase mb-2">Choose Your Industry</label>
+                <div className="relative">
+                  <select className="w-full bg-slate-800 border border-slate-700 text-white py-2 px-4 rounded-lg appearance-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm">
+                    <option>Distribution</option>
+                    <option>Manufacturing</option>
+                    <option>Retail</option>
+                    <option>Logistics</option>
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                </div>
+              </div>
+
+              <div className="md:col-span-5">
+                <CustomSlider 
+                  label="Annual Revenue" 
+                  value={revenue} 
+                  min={500000000} 
+                  max={20000000000} 
+                  formatValue={formatBillions}
+                  subLabel=""
+                  onChange={setRevenue} 
+                />
+              </div>
+
+              <div className="md:col-span-4">
+                <CustomSlider 
+                  label="Operating Expenses" 
+                  subLabel="(% of Revenue)"
+                  value={opExPercent} 
+                  min={5} 
+                  max={50} 
+                  formatValue={(v) => `${v}%`}
+                  onChange={setOpExPercent} 
+                />
               </div>
             </div>
 
-            <div className="md:col-span-5">
-              <CustomSlider 
-                label="Annual Revenue" 
-                value={revenue} 
-                min={500000000} 
-                max={20000000000} 
-                formatValue={formatBillions}
-                subLabel=""
-                onChange={setRevenue} 
-              />
-            </div>
-
-            <div className="md:col-span-4">
-              <CustomSlider 
-                label="Operating Expenses" 
-                subLabel="(% of Revenue)"
-                value={opExPercent} 
-                min={5} 
-                max={50} 
-                formatValue={(v) => `${v}%`}
-                onChange={setOpExPercent} 
-              />
-            </div>
-          </div>
-
-          {/* Main Data Table */}
-          <Card className="p-6 md:p-8 overflow-hidden relative">
+            {/* Table Headers */}
             <div className="grid grid-cols-12 gap-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-700/50 pb-4">
               <div className="col-span-3">Expense Areas</div>
               <div className="col-span-3 text-center">Current Allocation</div>
-              <div className="col-span-2 text-right">Annual Spends</div>
-              <div className="col-span-2 text-center">% Efficiency Gained</div>
-              <div className="col-span-2 text-right">Annual Savings</div>
+              <div className="col-span-2 text-center">
+                Annual Spends
+                <div className="flex justify-between text-[10px] text-slate-500 mt-1 px-2">
+                  <span>Low</span>
+                  <span>High</span>
+                </div>
+              </div>
+              <div className="col-span-2 text-center">
+                % Efficiency Gained
+                <div className="text-[10px] text-slate-500 mt-1">(1st use case only)</div>
+              </div>
+              <div className="col-span-2 text-center">
+                Annual Savings
+                <div className="flex justify-between text-[10px] text-slate-500 mt-1 px-2">
+                  <span>Low</span>
+                  <span>High</span>
+                </div>
+              </div>
             </div>
 
             <div className="space-y-2"> 
               {expenseCategories.map((category, index) => {
                 const annualSpend = totalOpEx * category.baseAllocation;
+                const annualSpendLow = totalOpEx * category.range[0];
+                const annualSpendHigh = totalOpEx * category.range[1];
+                
                 const savings = annualSpend * category.efficiencyGain;
+                const savingsLow = annualSpendLow * category.efficiencyGain;
+                const savingsHigh = annualSpendHigh * category.efficiencyGain;
+                
                 const isActive = activeRow === index;
 
                 return (
@@ -281,9 +314,10 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Annual Spend */}
-                    <div className="col-span-2 text-right text-sm font-mono text-slate-300">
-                      <Money value={annualSpend} compact />
+                    {/* Annual Spend (Low / High) */}
+                    <div className="col-span-2 flex justify-between text-sm font-mono text-slate-300 px-2">
+                      <Money value={annualSpendLow} compact />
+                      <Money value={annualSpendHigh} compact />
                     </div>
 
                     {/* Efficiency Gain - NEW TICK METER */}
@@ -291,9 +325,10 @@ export default function Home() {
                         <TickMeter value={category.efficiencyGain} />
                     </div>
 
-                    {/* Annual Savings */}
-                    <div className="col-span-2 text-right">
-                       <Money value={savings} highlight compact={false} />
+                    {/* Annual Savings (Low / High) */}
+                    <div className="col-span-2 flex justify-between text-sm font-mono px-2">
+                       <span className="text-slate-300"><Money value={savingsLow} compact /></span>
+                       <span className={`${isActive ? 'text-amber-400 font-bold' : 'text-slate-300'}`}><Money value={savingsHigh} compact /></span>
                     </div>
                   </div>
                 );
@@ -302,9 +337,12 @@ export default function Home() {
               {/* Total Row */}
               <div className="grid grid-cols-12 gap-4 items-center py-4 mt-2 border-t border-slate-700">
                  <div className="col-span-10 text-right font-bold text-slate-400 uppercase tracking-widest text-xs">Total Estimated Impact</div>
-                 <div className="col-span-2 text-right">
-                     <div className="text-2xl font-bold text-amber-400 font-mono">
-                         <Money value={totalSavings} />
+                 <div className="col-span-2 flex justify-between px-2">
+                     <div className="text-sm font-mono text-slate-400">
+                         <Money value={totals.savingsLow} compact />
+                     </div>
+                     <div className="text-sm font-bold text-amber-400 font-mono">
+                         <Money value={totals.savingsHigh} compact />
                      </div>
                  </div>
               </div>
@@ -326,9 +364,14 @@ export default function Home() {
                   <span className="text-slate-600 font-mono text-sm mt-0.5 group-hover:text-blue-500 transition-colors">
                     0{idx + 1}.
                   </span>
-                  <span className="text-slate-400 text-sm group-hover:text-slate-200 transition-colors border-b border-transparent group-hover:border-slate-600 pb-0.5">
-                    {problem}
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-slate-400 text-sm group-hover:text-slate-200 transition-colors border-b border-transparent group-hover:border-slate-600 pb-0.5">
+                      {problem}
+                    </span>
+                    <span className="text-[10px] text-slate-600 mt-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-blue-400">
+                      [Learn How | See Demo]
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -348,7 +391,7 @@ export default function Home() {
           {/* Step 1 */}
           <div className="relative group">
             <div className="flex items-baseline gap-4 mb-3">
-              <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-blue-900/20 stroke-text opacity-80 font-outline-2">01</span>
+              <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-400 to-blue-900 stroke-text opacity-90 font-outline-2 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">01</span>
               <h3 className="text-xl font-bold text-white tracking-wide">DISCOVERY</h3>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed pl-2 border-l-2 border-blue-500/30 ml-4 group-hover:border-blue-500 transition-colors">
@@ -359,7 +402,7 @@ export default function Home() {
           {/* Step 2 */}
           <div className="relative group">
             <div className="flex items-baseline gap-4 mb-3">
-              <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-blue-500 to-blue-900/20 opacity-80">02</span>
+              <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-500 to-blue-900 opacity-90 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">02</span>
               <h3 className="text-xl font-bold text-white tracking-wide">DELIVERY</h3>
             </div>
             <ul className="space-y-3 pl-6">
@@ -377,7 +420,7 @@ export default function Home() {
            {/* Step 3 */}
            <div className="relative group">
             <div className="flex items-baseline gap-4 mb-3">
-              <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-blue-500 to-blue-900/20 opacity-80">03</span>
+              <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-500 to-blue-900 opacity-90 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">03</span>
               <h3 className="text-xl font-bold text-white tracking-wide">REVIEW & CONFIRM</h3>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed pl-2 border-l-2 border-blue-500/30 ml-4 group-hover:border-blue-500 transition-colors">
