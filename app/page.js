@@ -166,7 +166,7 @@ export default function Home() {
   return (
     <div 
       className="min-h-screen text-slate-300 font-sans selection:bg-blue-500/30 overflow-x-hidden"
-      style={{ background: 'radial-gradient(ellipse at 50% 30%, #1a2a3a 0%, #0a0f14 70%)' }}
+      style={{ background: 'radial-gradient(ellipse at 50% 30%, #1f2937 0%, #030712 70%)' }}
     >
       
       {/* Navbar / Header */}
@@ -345,7 +345,7 @@ export default function Home() {
                          <Money value={totals.savingsLow} compact />
                      </div>
                      <div className="text-xl font-black text-amber-400 font-mono drop-shadow-[0_0_5px_rgba(251,191,36,0.3)]">
-                         <Money value={totals.savingsHigh} compact />
+                         <Money value={totals.savingsHigh} compact highlight />
                      </div>
                  </div>
               </div>
@@ -380,7 +380,7 @@ export default function Home() {
             </div>
 
             <div className="mt-1 pt-1 border-t border-slate-800 flex justify-end">
-                <button className="text-[10px] text-blue-400 hover:text-blue-300 flex items-center gap-1 uppercase tracking-wider font-bold">
+                <button className="text-[10px] text-amber-500 hover:text-amber-400 flex items-center gap-1 uppercase tracking-wider font-bold">
                     Learn How <ArrowRight className="w-3 h-3" />
                 </button>
             </div>
