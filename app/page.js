@@ -80,8 +80,7 @@ const CustomSlider = ({ value, min, max, onChange, label, subLabel, formatValue 
         max={max} 
         value={value} 
         onChange={(e) => onChange(Number(e.target.value))}
-        className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer touch-manipulation"
-        style={{ minHeight: '44px', marginTop: '-10px' }}
+        className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer touch-manipulation min-h-[44px] -mt-2.5"
       />
       <div 
         className="absolute top-1/2 -translate-y-1/2 w-6 h-6 md:w-4 md:h-4 bg-white rounded-full shadow-lg pointer-events-none transform transition-transform"
@@ -319,10 +318,7 @@ export default function Home() {
                   <div 
                     key={category.id}
                     onClick={() => setActiveRow(index)}
-                    className={`cursor-pointer transition-all duration-200 group min-h-[44px]
-                      ${isActive ? 'bg-blue-500/10 border border-blue-500/30' : 'hover:bg-slate-800/50 border border-transparent'}
-                      rounded-lg
-                    `}
+                    className={`cursor-pointer transition-all duration-200 group min-h-[44px] rounded-lg ${isActive ? 'bg-blue-500/10 border border-blue-500/30' : 'hover:bg-slate-800/50 border border-transparent'}`}
                   >
                     {/* Mobile Card Layout */}
                     <div className="block md:hidden p-3">
@@ -492,7 +488,7 @@ export default function Home() {
           <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-3 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
             
-            <h3 className="text-sm md:text-base text-slate-200 mb-2 flex flex-wrap items-center justify-center gap-1 md:gap-2 text-center">
+            <h3 className="text-sm md:text-base text-slate-200 mb-2 flex flex-wrap items-center justify-center gap-1 md:gap-2">
               <span>Problems solved to achieve</span> <span className="text-amber-400 font-bold text-lg">15%</span> <span>improvement in</span>
               <span className="text-white font-bold">{expenseCategories[activeRow].name}</span>
             </h3>
